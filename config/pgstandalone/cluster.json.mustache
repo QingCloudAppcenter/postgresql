@@ -1,0 +1,86 @@
+{
+    "name": {{cluster.name}},
+    "description": {{cluster.description}},
+    "vxnet": {{cluster.vxnet}},
+    "nodes": [{ 
+		"role": "pg_standalone",
+        "container": {
+            "type": "kvm",
+            "image": "img-s76rggsf",
+            "zone": "sh1a"
+        },        
+        "cpu": {{cluster.pg_standalone.cpu}},
+        "memory": {{cluster.pg_standalone.memory}},
+        "instance_class": {{cluster.pg_standalone.instance_class}},
+		"count": {{cluster.pg_standalone.count}},
+		"volume": {
+            "size": {{cluster.pg_standalone.volume_size}},
+            "mount_point": "/data",
+            "mount_options": "defaults,noatime",
+            "filesystem": "ext4",
+            "class": {{cluster.pg_standalone.volume_class}}
+        },
+        "services": { 
+			"init": {
+                "cmd": "/usr/lib/postgresql/9.6/bin/scripts/pginit.sh"
+            },
+			"start": {
+                "cmd": "service postgresql start"
+            },
+			"restart": {
+                "cmd": "service postgresql restart"
+                 },
+            "stop": {
+                "cmd": "service postgresql stop  -m fast"
+            } 
+        },
+		"health_check": {
+            "enable": true,
+            "interval_sec": 60,
+            "timeout_sec": 10,
+            "action_timeout_sec": 30,
+            "healthy_threshold": 3,
+            "unhealthy_threshold": 3,
+            "check_cmd": "/usr/lib/postgresql/9.6/bin/scripts/pghealthcheck.sh",
+            "action_cmd": "/usr/lib/postgresql/9.6/bin/scripts/pghealthcheckaction.sh"
+        },
+		"monitor": {
+        "enable": true,
+        "cmd": "/usr/lib/postgresql/9.6/bin/scripts/pgmonitor.py",
+        "items": {
+            "connCnt": {
+                "unit": "",
+                "value_type": "int",
+                "statistics_type": "latest",
+                "scale_factor_when_display": 1
+            },
+            "commitCnt": {
+                "unit": "",
+                "value_type": "int",
+                "statistics_type": "latest",
+                "scale_factor_when_display": 1
+            },
+			"waiteventCnt": {
+                "unit": "",
+                "value_type": "int",
+                "statistics_type": "latest",
+                "scale_factor_when_display": 1
+            },
+            "deadlocksCnt": {
+                "unit": "",
+                "value_type": "int",
+                "statistics_type": "latest",
+                "scale_factor_when_display": 1
+            } 
+        },
+		"groups": {
+			"connCntGrp": ["connCnt"],
+			"commitCntGrp": ["commitCnt"],
+			"waiteventCntGrp": ["waiteventCnt"],
+			"deadlocksCntGrp": ["deadlocksCnt"]	
+		},
+		"display": ["connCntGrp","commitCntGrp","waiteventCntGrp","deadlocksCntGrp"],
+		"alarm": ["connCnt", "deadlocksCnt"] 
+     }
+    }] 
+}
