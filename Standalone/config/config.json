@@ -1,0 +1,393 @@
+{
+    "type": "array",
+    "properties": [{
+        "key": "cluster",
+        "description": "cluster properties",
+        "type": "array",
+        "properties": [{
+            "key": "name",
+            "type": "string",
+            "label": "App Name",
+            "description": "The name of the application",
+            "default": "PG Standalone",
+            "required": "no"
+        }, {
+            "key": "description",
+            "type": "string",
+            "label": "Description",
+            "description": "The description of the application",
+            "default": "",
+            "required": "no"
+        }, {
+            "key": "vxnet",
+            "label": "VxNet",
+            "description": "The vxnet that the application will join",
+            "type": "string",
+            "default": "",
+            "required": "yes"
+        }, {
+            "key": "pg_standalone",
+            "description": "role-based node properties",
+            "label": "PG Standalone",
+            "type": "array",
+            "properties": [{
+                "key": "cpu",
+                "label": "CPU",
+                "description": "CPUs of each node",
+                "type": "integer",
+                "default": 1,
+                "range": [1, 2, 4, 8, 16],
+                "required": "yes"
+            }, {
+                "key": "memory",
+                "label": "Memory",
+                "description": "Memory of each node (in MiB)",
+                "type": "integer",
+                "default": 2048,
+                "range": [2048,4096, 8192, 16384, 32768, 49152],
+                "required": "yes"
+            }, {
+                "key": "instance_class",
+                "label": "Instance Class",
+                "description": "The instance type for the cluster to run，such as high performance，high performance plus",
+                "type": "integer",
+                "default": 1,
+                "range": [0, 1],
+                "required": "yes"
+            }, {
+                "key": "count",
+                "label": "Count",
+                "description": "Number of nodes for the cluster to create",
+                "type": "integer",
+                "default": 1,
+                "max": 1,
+                "min": 1,
+				"range": [1],
+                "required": "yes"
+            },{
+                "key": "volume_class",
+                "label": "Volume Class",
+                "description": "The volume type for each instance，such as high performance，high performance plus，high capacity",
+                "type": "integer",
+                "default": 3,
+                "range": [0, 2, 3],
+                "required": "yes"
+            },{
+                "key": "volume_size",
+                "label": "Volume Size",
+                "description": "The volume size for each instance",
+                "type": "integer",
+                "default": 10,
+                "min": 10,
+                "max": 1000,
+                "step": 10,
+                "required": "yes"
+            }]
+        },
+		{
+            "key": "pg_client",
+            "description": "role-based node properties",
+            "label": "PG Client",
+            "type": "array",
+            "properties": [{
+                "key": "cpu",
+                "label": "CPU",
+                "description": "CPUs of each node",
+                "type": "integer",
+                "default": 1,
+                "range": [1, 2, 4, 8, 16],
+                "required": "yes"
+            }, {
+                "key": "memory",
+                "label": "Memory",
+                "description": "Memory of each node (in MiB)",
+                "type": "integer",
+                "default": 2048,
+                "range": [2048,4096,  8192, 16384, 32768, 49152],
+                "required": "yes"
+            }, {
+                "key": "count",
+                "label": "Count",
+                "description": "Number of nodes for the cluster to create",
+                "type": "integer",
+                "default": 1,
+                "max": 1,
+                "min": 0,
+				"range": [0, 1],
+                "required": "yes"
+            }]
+        }]
+    },
+	{
+        "key": "env",
+        "description": "application configuration properties",
+        "type": "array",
+        "properties": [
+		{
+            "key": "DBname",
+            "label": "DBname",
+            "description": "DB name to create",
+            "type": "string",
+            "default": "qingcloud",
+            "required": "yes"
+        },{
+            "key": "DBusername",
+            "label": "DBusername",
+            "description": "DB username to create",
+            "type": "string",
+            "default": "qingcloud",
+            "required": "yes"
+        },{
+            "key": "DBpassword",
+            "label": "DBpassword",
+            "description": "DB password to create",
+            "type": "password",
+            "default": "qingcloud1234",
+            "required": "yes"
+        },
+		{
+            "key": "max_connections",
+            "label": "max_connections",
+            "description": "Sets the maximum number of concurrent connections.",
+            "type": "integer",
+            "default": 512,
+            "required": "yes"
+        },
+		{
+            "key": "shared_buffers",
+            "label": "shared_buffers",
+            "description": "Sets the number of shared memory buffers used by the server.",
+            "type": "string",
+            "default": "1GB",
+            "required": "yes"
+        } ,
+		{
+            "key": "wal_buffers",
+            "label": "wal_buffers",
+            "description": "Sets the number of disk-page buffers in shared memory for WAL.",
+            "type": "string",
+            "default": "8MB",
+            "required": "yes"
+        } ,
+		{
+            "key": "work_mem",
+            "label": "work_mem",
+            "description": "Sets the maximum memory to be used for query workspaces.",
+            "type": "string",
+            "default": "4MB",
+            "required": "yes"
+        } ,
+		{
+            "key": "maintenance_work_mem",
+            "label": "maintenance_work_mem",
+            "description": "Sets the maximum number of concurrent connections.",
+            "type": "string",
+            "default": "64MB",
+            "required": "yes"
+        } ,
+		{
+            "key": "effective_cache_size",
+            "label": "effective_cache_size",
+            "description": "Sets the planner's assumption about the size of the disk cache.",
+            "type": "string",
+            "default": "4GB",
+            "required": "yes"
+        } ,		
+		{
+            "key": "wal_keep_segments",
+            "label": "wal_keep_segments",
+            "description": "Sets the number of WAL files held for standby servers.",
+            "type": "integer",
+            "default": 256,
+            "required": "yes"
+        } ,
+		{
+            "key": "checkpoint_timeout",
+            "label": "checkpoint_timeout",
+            "description": "Sets the maximum time between automatic WAL checkpoints.",
+            "type": "string",
+            "default": "5min",
+            "required": "no"
+        } ,	 	 
+		{
+            "key": "autovacuum",
+            "label": "autovacuum",
+            "description": "Starts the autovacuum subprocess.",
+            "type": "string",
+            "default": "on",
+            "required": "no"
+        } ,
+		{
+            "key": "vacuum_cost_delay",
+            "label": "vacuum_cost_delay",
+            "description": "Vacuum cost delay in milliseconds.",
+            "type": "integer",
+            "default": 0,
+            "required": "no"
+        } ,
+		{
+            "key": "autovacuum_naptime",
+            "label": "autovacuum_naptime",
+            "description": "Time to sleep between autovacuum runs.",
+            "type": "string",
+            "default": "1min",
+            "required": "no"
+        } ,
+		{
+            "key": "vacuum_cost_limit",
+            "label": "vacuum_cost_limit",
+            "description": "Vacuum cost amount available before napping.",
+            "type": "integer",
+            "default": 200,
+            "required": "no"
+        } ,
+		{
+            "key": "bgwriter_delay",
+            "label": "bgwriter_delay",
+            "description": "Background writer sleep time between rounds.",
+            "type": "string",
+            "default": "200ms",
+            "required": "no"
+        } ,
+		{
+            "key": "bgwriter_lru_multiplier",
+            "label": "bgwriter_lru_multiplier",
+            "description": "Multiple of the average buffer usage to free per round.",
+            "type": "integer",
+            "default": 2,
+            "required": "no"
+        } ,
+		{
+            "key": "wal_level",
+            "label": "wal_level",
+            "description": "Set the level of information written to the WAL.",
+            "type": "string",
+            "default": "replica",
+            "required": "no"
+        } ,
+		{
+            "key": "wal_writer_delay",
+            "label": "wal_writer_delay",
+            "description": "Time between WAL flushes performed in the WAL writer.",
+            "type": "string",
+            "default": "200ms",
+            "required": "no"
+        } ,
+		{
+            "key": "fsync",
+            "label": "fsync",
+            "description": "Forces synchronization of updates to disk.",
+            "type": "string",
+            "default": "on",
+            "required": "no"
+        } ,
+		{
+            "key": "commit_delay",
+            "label": "commit_delay",
+            "description": "Sets the delay in microseconds between transaction commit and flushing WAL to disk.",
+            "type": "integer",
+            "default": 0,
+            "required": "no"
+        } ,
+		{
+            "key": "commit_siblings",
+            "label": "commit_siblings",
+            "description": "Sets the minimum concurrent open transactions before performing commit_delay.",
+            "type": "integer",
+            "default": 5,
+            "required": "no"
+        } ,
+		{
+            "key": "enable_bitmapscan",
+            "label": "enable_bitmapscan",
+            "description": "Enables the planner's use of bitmap-scan plans.",
+            "type": "string",
+            "default": "on",
+            "required": "no"
+        } ,
+		{
+            "key": "enable_seqscan",
+            "label": "enable_seqscan",
+            "description": "Enables the planner's use of sequential-scan plans.",
+            "type": "string",
+            "default": "on",
+            "required": "no"
+        } ,
+		{
+            "key": "full_page_writes",
+            "label": "full_page_writes",
+            "description": "Writes full pages to WAL when first modified after a checkpoint.",
+            "type": "string",
+            "default": "on",
+            "required": "no"
+        } ,
+		{
+            "key": "log_min_messages",
+            "label": "log_min_messages",
+            "description": "Sets the message levels that are logged.",
+            "type": "string",
+            "default": "warning",
+            "required": "no"
+        } ,
+		{
+            "key": "deadlock_timeout",
+            "label": "deadlock_timeout",
+            "description": "Sets the time to wait on a lock before checking for deadlock.",
+            "type": "string",
+            "default": "1s",
+            "required": "no"
+        } ,
+		{
+            "key": "log_lock_waits",
+            "label": "log_lock_waits",
+            "description": "Logs long lock waits.",
+            "type": "string",
+            "default": "off",
+            "required": "no"
+        } ,
+		{
+            "key": "log_min_duration_statement",
+            "label": "log_min_duration_statement",
+            "description": "Sets the minimum execution time above which statements will be logged.",
+            "type": "integer",
+            "default": -1,
+            "required": "no"
+        } ,
+		{
+            "key": "temp_buffers",
+            "label": "temp_buffers",
+            "description": "Sets the maximum number of temporary buffers used by each session.",
+            "type": "string",
+            "default": "8MB",
+            "required": "no"
+        }  ,
+		{
+            "key": "max_prepared_transactions",
+            "label": "max_prepared_transactions",
+            "description": "Sets the maximum number of simultaneously prepared transactions.",
+            "type": "integer",
+            "default": 0,
+            "required": "no"
+        } ,
+		{
+            "key": "max_wal_senders",
+            "label": "max_wal_senders",
+            "description": "Sets the maximum number of simultaneously running WAL sender processes.",
+            "type": "integer",
+            "default": 10,
+            "required": "no"
+        } ,
+		{
+            "key": "bgwriter_lru_maxpages",
+            "label": "bgwriter_lru_maxpages",
+            "description": "Background writer maximum number of LRU pages to flush per round.",
+            "type": "integer",
+            "default": 100,
+            "required": "no"
+        }  
+		
+		]
+    }
+	
+	]
+}

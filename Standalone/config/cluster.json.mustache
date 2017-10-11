@@ -1,0 +1,158 @@
+{
+    "name": {{cluster.name}},
+    "description": {{cluster.description}},
+    "vxnet": {{cluster.vxnet}},
+    "nodes": [{
+		"role": "pg_standalone",
+        "container": {
+            "type": "lxc",
+            "image": "img-dy7cyxsj",
+            "zone": "sh1a"
+        },
+        "cpu": {{cluster.pg_standalone.cpu}},
+        "memory": {{cluster.pg_standalone.memory}},
+        "instance_class": {{cluster.pg_standalone.instance_class}},
+		"count": {{cluster.pg_standalone.count}},
+		"volume": {
+            "size": {{cluster.pg_standalone.volume_size}},
+            "mount_point": "/data",
+            "mount_options": "defaults,noatime",
+            "filesystem": "ext4",
+            "class": {{cluster.pg_standalone.volume_class}}
+        },
+        "services": {
+			"init": {
+			    "order": 1,
+                "cmd": "/usr/lib/postgresql/9.6/bin/scripts/pginit.sh"
+            },
+			"start": {
+				"order": 1,
+                "cmd": "/usr/lib/postgresql/9.6/bin/scripts/pgstart.sh"
+            },
+			"restart": {
+                "cmd": "service postgresql restart"
+                 },
+            "stop": {
+                "cmd": "service postgresql stop  -m fast"
+            }
+        },
+		"env": {
+		  "DBname": {{env.DBname}},
+		  "DBusername": {{env.DBusername}},
+		  "DBpassword": {{env.DBpassword}},
+		  "max_connections": {{env.max_connections}},
+		  "shared_buffers": {{env.shared_buffers}},
+		  "wal_buffers": {{env.wal_buffers}},
+		  "work_mem": {{env.work_mem}},
+		  "effective_cache_size": {{env.effective_cache_size}},
+		  "maintenance_work_mem": {{env.maintenance_work_mem}},
+		  "wal_keep_segments": {{env.wal_keep_segments}},		  
+		  "checkpoint_timeout": {{env.checkpoint_timeout}}, 
+		  "autovacuum": {{env.autovacuum}},
+		  "vacuum_cost_delay": {{env.vacuum_cost_delay}},
+		  "autovacuum_naptime": {{env.autovacuum_naptime}},
+		  "vacuum_cost_limit": {{env.vacuum_cost_limit}},
+		  "bgwriter_delay": {{env.bgwriter_delay}},
+		  "bgwriter_lru_multiplier": {{env.bgwriter_lru_multiplier}},
+		  "wal_level": {{env.wal_level}},
+		  "wal_writer_delay": {{env.wal_writer_delay}},
+		  "fsync": {{env.fsync}},
+		  "commit_delay": {{env.commit_delay}},
+		  "commit_siblings": {{env.commit_siblings}},
+		  "enable_bitmapscan": {{env.enable_bitmapscan}},
+		  "enable_seqscan": {{env.enable_seqscan}},
+		  "full_page_writes": {{env.full_page_writes}},
+		  "log_min_messages": {{env.log_min_messages}},
+		  "deadlock_timeout": {{env.deadlock_timeout}},
+		  "log_lock_waits": {{env.log_lock_waits}},
+		  "log_min_duration_statement": {{env.log_min_duration_statement}},
+		  "temp_buffers": {{env.temp_buffers}},
+		  "max_prepared_transactions": {{env.max_prepared_transactions}},
+		  "max_wal_senders": {{env.max_wal_senders}},
+		  "bgwriter_lru_maxpages": {{env.bgwriter_lru_maxpages}}
+		},
+		"health_check": {
+            "enable": true,
+            "interval_sec": 60,
+            "timeout_sec": 10,
+            "action_timeout_sec": 30,
+            "healthy_threshold": 2,
+            "unhealthy_threshold": 2,
+            "check_cmd": "/usr/lib/postgresql/9.6/bin/scripts/pghealthcheck.sh",
+            "action_cmd": "/usr/lib/postgresql/9.6/bin/scripts/pghealthcheckaction.sh"
+        },
+		"monitor": {
+        "enable": true,
+        "cmd": "/usr/lib/postgresql/9.6/bin/scripts/pgmonitor.py",
+        "items": {
+            "connCnt": {
+                "unit": "",
+                "value_type": "int",
+                "statistics_type": "latest",
+                "scale_factor_when_display": 1
+            },
+            "commitCnt": {
+                "unit": "",
+                "value_type": "int",
+                "statistics_type": "latest",
+                "scale_factor_when_display": 1
+            },
+			"waiteventCnt": {
+                "unit": "",
+                "value_type": "int",
+                "statistics_type": "latest",
+                "scale_factor_when_display": 1
+            },
+            "deadlocksCnt": {
+                "unit": "",
+                "value_type": "int",
+                "statistics_type": "latest",
+                "scale_factor_when_display": 1
+            }
+        },
+		"groups": {
+			"connCntGrp": ["connCnt"],
+			"commitCntGrp": ["commitCnt"],
+			"waiteventCntGrp": ["waiteventCnt"],
+			"deadlocksCntGrp": ["deadlocksCnt"]
+		},
+		"display": ["connCntGrp","commitCntGrp","waiteventCntGrp","deadlocksCntGrp"],
+		"alarm": ["connCnt", "deadlocksCnt"]
+     }
+    },
+	{
+		"role": "pg_client",
+        "container": {
+            "type": "kvm",
+            "image": "img-mgz2gkxf",
+            "zone": "sh1a"
+        },
+        "cpu": {{cluster.pg_client.cpu}},
+        "memory": {{cluster.pg_client.memory}},
+		"count": {{cluster.pg_client.count}},
+		"user_access": true,
+		"advanced_actions": ["scale_horizontal"],
+		"health_check": {
+            "enable": true,
+            "interval_sec": 180,
+            "timeout_sec": 10,
+            "action_timeout_sec": 30,
+            "healthy_threshold": 2,
+            "unhealthy_threshold": 2,
+            "check_cmd": "pgpidcnt=$(ps ax | grep -i '/usr/lib/postgresql/9.6/bin/postgres' | grep -v 'grep' |wc -l);if [ 0 == $pgpidcnt  ];  then   exit 1;   else  exit 0;   fi"
+        },
+        "services": {
+			"start": {
+				"order": 2,
+				"cmd": "service postgresql start"
+            },
+			"restart": {
+                "cmd": "service postgresql restart"
+                 },
+            "stop": {
+                "cmd": "service postgresql stop  -m fast"
+            }
+        }
+    }
+	]
+}
