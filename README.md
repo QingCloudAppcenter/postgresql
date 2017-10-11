@@ -1,2 +1,2 @@
 # postgresql
-postgresql standalone and postgresql cluster using pgpool
+postgresql standalone and postgresql cluster 
