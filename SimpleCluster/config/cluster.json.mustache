@@ -7,7 +7,7 @@
 		"role": "pg",
         "container": {
             "type": "lxc",
-            "image": "img-qgfjwh57",
+            "image": "img-lha07zfn",
             "zone": "sh1a"
         },
         "cpu": {{cluster.pg.cpu}},
@@ -37,12 +37,11 @@
             "stop": {
                 "cmd": "/usr/lib/postgresql/9.6/bin/scripts/pgstop.sh"
             } ,
-			"backup": {
-                "cmd": " echo 'backup' ",
-                "nodes_to_execute_on": 1,
-                "order": 1,
-                "timeout": 86400
-            }
+			"RebuildStandby": {
+                "type": "custom",
+                "cmd": "/usr/lib/postgresql/9.6/bin/scripts/pgrebuildstandby.sh",
+                "timeout": 86400 
+			}
         },
 		"health_check": {
             "enable": true,
@@ -103,55 +102,32 @@
 	"role": "pg_client",
     "container": {
             "type": "kvm",
-            "image": "img-mgz2gkxf",
+            "image": "img-hjtol5hl",
             "zone": "sh1a"
         },
     "cpu": {{cluster.pg_client.cpu}},
     "memory": {{cluster.pg_client.memory}},
 		"count": {{cluster.pg_client.count}},
 		"user_access": true,
-	    "advanced_actions": ["scale_horizontal"],
-		"health_check": {
-            "enable": true,
-            "interval_sec": 180,
-            "timeout_sec": 10,
-            "action_timeout_sec": 30,
-            "healthy_threshold": 2,
-            "unhealthy_threshold": 2,
-            "check_cmd": "pgpidcnt=$(ps ax | grep -i '/usr/lib/postgresql/9.6/bin/postgres' | grep -v 'grep' |wc -l);if [ 0 == $pgpidcnt  ];  then   exit 1;   else  exit 0;   fi"
-        },
-        "services": {
-			"start": {
-				"order": 2,
-                "cmd": "service postgresql start"
-            },
-			"restart": {
-                "cmd": "service postgresql restart"
-                 },
-            "stop": {
-                "cmd": "service postgresql stop  -m fast"
-            }
-        }
+	    "advanced_actions": ["scale_horizontal"] 
     }],
 	"env": {
 		  "DBname": {{env.DBname}},
 		  "DBusername": {{env.DBusername}},
 		  "DBpassword": {{env.DBpassword}},
 		  "max_connections": {{env.max_connections}},
-		  "shared_buffers": {{env.shared_buffers}},
 		  "wal_buffers": {{env.wal_buffers}},
 		  "work_mem": {{env.work_mem}},
 		  "effective_cache_size": {{env.effective_cache_size}},
 		  "maintenance_work_mem": {{env.maintenance_work_mem}},
-		  "wal_keep_segments": {{env.wal_keep_segments}},		  
-		  "checkpoint_timeout": {{env.checkpoint_timeout}}, 
+		  "wal_keep_segments": {{env.wal_keep_segments}},
+		  "checkpoint_timeout": {{env.checkpoint_timeout}},
 		  "autovacuum": {{env.autovacuum}},
 		  "vacuum_cost_delay": {{env.vacuum_cost_delay}},
 		  "autovacuum_naptime": {{env.autovacuum_naptime}},
 		  "vacuum_cost_limit": {{env.vacuum_cost_limit}},
 		  "bgwriter_delay": {{env.bgwriter_delay}},
-		  "bgwriter_lru_multiplier": {{env.bgwriter_lru_multiplier}},
-		  "wal_level": {{env.wal_level}},
+		  "bgwriter_lru_multiplier": {{env.bgwriter_lru_multiplier}}, 
 		  "wal_writer_delay": {{env.wal_writer_delay}},
 		  "fsync": {{env.fsync}},
 		  "commit_delay": {{env.commit_delay}},
@@ -167,8 +143,8 @@
 		  "max_prepared_transactions": {{env.max_prepared_transactions}},
 		  "max_wal_senders": {{env.max_wal_senders}},
 		  "bgwriter_lru_maxpages": {{env.bgwriter_lru_maxpages}},
-		  "synchronous_standby_names": {{env.synchronous_standby_names}},
-		  "synchronous_commit": {{env.synchronous_commit}}
+		  "log_statement": {{env.log_statement}},
+		  "SyncStreamRepl": {{env.SyncStreamRepl}}
 		},
 		"endpoints": {
         "client": {

@@ -1,50 +1,50 @@
 {
-	"cluster properties": "集群属性", 
+	"cluster properties": "集群属性",
     "App Name": "应用名称",
 	"The name of the application": "应用名称",
-	
+
 	"Description": "应用描述",
-	"The description of the application": "应用描述", 
-	
+	"The description of the application": "应用描述",
+
 	"VxNet": "私有网络",
 	"The vxnet that the application will join": "应用运行的私有网络环境",
-	
-	"Role Name": "角色", 
-	"role-based node properties": "基于角色的节点属性", 
-	
+
+	"Role Name": "角色",
+	"role-based node properties": "基于角色的节点属性",
+
 	"CPU": "CPU",
-	"CPUs of each node": "每个节点的CPU", 
-	
+	"CPUs of each node": "每个节点的CPU",
+
 	 "Memory": "内存",
-	 "Memory of each node (in MiB)": "每个节点的内存大小（单位 MiB）",	 
-	 
+	 "Memory of each node (in MiB)": "每个节点的内存大小（单位 MiB）",
+
 	 "Instance Class":"实例类别",
 	 "The instance type for the cluster to run，such as high performance，high performance plus":"节点实例类型，比如性能型与超高性能型。",
-	
+
 	"Count":"节点数量",
 	"Number of nodes for the cluster to create":"集群所建立的节点数量",
-	
+
 	"Volume Class":"磁盘类别",
-	"The volume type for each instance，such as high performance，high performance plus，high capacity":"每个实例的磁盘类型，比如性能型与超高性能型。",	
-	
+	"The volume type for each instance，such as high performance，high performance plus，high capacity":"每个实例的磁盘类型，比如性能型与超高性能型。",
+
 	"Volume Size":"磁盘大小",
-	"The volume size for each instance":"每个实例的磁盘大小",	
-	
+	"The volume size for each instance":"每个实例的磁盘大小",
+
 	"connCntGrp":"连接数",
 	"commitCntGrp":"事务总数",
 	"waiteventCntGrp":"等待事件数",
 	"deadlocksCntGrp":"死锁数",
-	
+
 	"DBname":"数据库名称",
 	"DB name to create":"新创建的数据库名称",
 	"DBusername":"数据库用户名",
 	"DB username to create":"新创建的数据库用户名",
 	"DBpassword":"数据库密码",
 	"DB password to create":"新创建的数据库密码",
-	"max_connections":"最大连接数",
-	"Sets the maximum number of concurrent connections.":"数据库的最大并发连接数",
+	"max_connections":"max_connections",
+	"Sets the maximum number of concurrent connections.":"数据库的最大并发连接数,修改该参数会重启数据库服务。",
 	"wal_buffers":"wal_buffers",
-	"Sets the number of disk-page buffers in shared memory for WAL.":"用于还未写入磁盘的 WAL 数据的共享内存量。",
+	"Sets the number of disk-page buffers in shared memory for WAL.":"用于还未写入磁盘的 WAL 数据的共享内存量,修改该参数会重启数据库服务。",
 	"wal_keep_segments":"wal_keep_segments",
 	"Sets the number of WAL files held for standby servers.":"指定在后备服务器需要为流复制获取日志段文件的情况下，pg_xlog目录下所能保留的过去日志文件段的最小数目。",
 	"checkpoint_timeout":"checkpoint_timeout",
@@ -56,7 +56,7 @@
 	"effective_cache_size":"effective_cache_size",
 	"Sets the planner's assumption about the size of the disk cache.":"设置规划器对一个单一查询可用的有效磁盘缓冲区尺寸的假设。",
 	"maintenance_work_mem":"maintenance_work_mem",
-	"Sets the maximum number of concurrent connections.":"指定在维护性操作（例如VACUUM、CREATE INDEX和ALTER TABLE ADD FOREIGN KEY）中使用的 最大的内存量。",
+	"Sets the maximum memory to be used for maintenance operations.":"指定在维护性操作（例如VACUUM、CREATE INDEX和ALTER TABLE ADD FOREIGN KEY）中使用的 最大的内存量。",
 	"autovacuum":"autovacuum",
 	"Starts the autovacuum subprocess.":"控制服务器是否运行自动清理启动器后台进程。",
 	"vacuum_cost_delay":"vacuum_cost_delay",
@@ -96,9 +96,11 @@
 	"temp_buffers":"temp_buffers",
 	"Sets the maximum number of temporary buffers used by each session.":"设置每个数据库会话使用的临时缓冲区的最大数目。",
 	"max_prepared_transactions":"max_prepared_transactions",
-	"Sets the maximum number of simultaneously prepared transactions.":"设置可以同时处于prepared状态的事务的最大数目。" ,
+	"Sets the maximum number of simultaneously prepared transactions.":"设置可以同时处于prepared状态的事务的最大数目,修改该参数会重启数据库服务。" ,
 	"max_wal_senders":"max_wal_senders" ,
-	"Sets the maximum number of simultaneously running WAL sender processes.":"指定来自后备服务器或流式基础备份客户端的并发连接的最大数量（即同时运行 WAL 发送进程 的最大数）。" ,
+	"Sets the maximum number of simultaneously running WAL sender processes.":"指定来自后备服务器或流式基础备份客户端的并发连接的最大数量（即同时运行 WAL 发送进程 的最大数）,修改该参数会重启数据库服务。" ,
 	"bgwriter_lru_maxpages":"bgwriter_lru_maxpages" ,
-	"Background writer maximum number of LRU pages to flush per round.":"在每个轮次中，不超过这么多个缓冲区将被后台写入器写出。" 
+	"Background writer maximum number of LRU pages to flush per round.":"在每个轮次中，不超过这么多个缓冲区将被后台写入器写出。",
+	"log_statement":"log_statement", 
+	"Sets the type of statements logged.":"控制哪些 SQL 语句被记录。有效值是 none (off)、ddl、mod和 all（所有语句）。"
 	}

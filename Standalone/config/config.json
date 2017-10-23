@@ -9,7 +9,7 @@
             "type": "string",
             "label": "App Name",
             "description": "The name of the application",
-            "default": "PG Standalone",
+            "default": "PostgreSQL on QingCloud",
             "required": "no"
         }, {
             "key": "description",
@@ -129,38 +129,35 @@
             "description": "DB name to create",
             "type": "string",
             "default": "qingcloud",
-            "required": "yes"
+            "required": "yes",
+             "changeable": false
         },{
             "key": "DBusername",
             "label": "DBusername",
             "description": "DB username to create",
             "type": "string",
             "default": "qingcloud",
-            "required": "yes"
+            "required": "yes",
+            "changeable": false
         },{
             "key": "DBpassword",
             "label": "DBpassword",
             "description": "DB password to create",
             "type": "password",
             "default": "qingcloud1234",
-            "required": "yes"
+            "required": "yes",
+            "changeable": false
         },
 		{
             "key": "max_connections",
             "label": "max_connections",
             "description": "Sets the maximum number of concurrent connections.",
             "type": "integer",
-            "default": 512,
+            "default": 128,
+			"min": 0,
+			"max": 65536, 
             "required": "yes"
         },
-		{
-            "key": "shared_buffers",
-            "label": "shared_buffers",
-            "description": "Sets the number of shared memory buffers used by the server.",
-            "type": "string",
-            "default": "1GB",
-            "required": "yes"
-        } ,
 		{
             "key": "wal_buffers",
             "label": "wal_buffers",
@@ -180,7 +177,7 @@
 		{
             "key": "maintenance_work_mem",
             "label": "maintenance_work_mem",
-            "description": "Sets the maximum number of concurrent connections.",
+            "description": "Sets the maximum memory to be used for maintenance operations.",
             "type": "string",
             "default": "64MB",
             "required": "yes"
@@ -192,13 +189,15 @@
             "type": "string",
             "default": "4GB",
             "required": "yes"
-        } ,		
+        } ,
 		{
             "key": "wal_keep_segments",
             "label": "wal_keep_segments",
             "description": "Sets the number of WAL files held for standby servers.",
             "type": "integer",
             "default": 256,
+			"min": 0,
+			"max": 1024,
             "required": "yes"
         } ,
 		{
@@ -208,13 +207,14 @@
             "type": "string",
             "default": "5min",
             "required": "no"
-        } ,	 	 
+        } ,
 		{
             "key": "autovacuum",
             "label": "autovacuum",
             "description": "Starts the autovacuum subprocess.",
             "type": "string",
             "default": "on",
+			"range": ["on", "off"],
             "required": "no"
         } ,
 		{
@@ -223,6 +223,8 @@
             "description": "Vacuum cost delay in milliseconds.",
             "type": "integer",
             "default": 0,
+			"min": 0,
+			"max": 100,
             "required": "no"
         } ,
 		{
@@ -239,46 +241,47 @@
             "description": "Vacuum cost amount available before napping.",
             "type": "integer",
             "default": 200,
+			"min": 0,
+			"max": 10000,   
             "required": "no"
         } ,
 		{
             "key": "bgwriter_delay",
             "label": "bgwriter_delay",
             "description": "Background writer sleep time between rounds.",
-            "type": "string",
-            "default": "200ms",
+            "type": "integer",
+			"min": 10,
+			"max": 10000, 
+			"default": 200,
             "required": "no"
         } ,
 		{
             "key": "bgwriter_lru_multiplier",
             "label": "bgwriter_lru_multiplier",
             "description": "Multiple of the average buffer usage to free per round.",
-            "type": "integer",
-            "default": 2,
+            "type": "number",
+			"min": 0,
+			"max": 10.0, 
+			"default": 2.0,
             "required": "no"
-        } ,
+        } ,		
 		{
-            "key": "wal_level",
-            "label": "wal_level",
-            "description": "Set the level of information written to the WAL.",
-            "type": "string",
-            "default": "replica",
-            "required": "no"
-        } ,
-		{
-            "key": "wal_writer_delay",
-            "label": "wal_writer_delay",
-            "description": "Time between WAL flushes performed in the WAL writer.",
-            "type": "string",
-            "default": "200ms",
-            "required": "no"
-        } ,
+			"key": "wal_writer_delay",
+			"label": "wal_writer_delay",
+			"description": "Time between WAL flushes performed in the WAL writer.",
+			"type": "integer",
+			"min": 1,
+			"max": 10000,
+			"default": 200,
+			"required": "no"
+			} ,
 		{
             "key": "fsync",
             "label": "fsync",
             "description": "Forces synchronization of updates to disk.",
             "type": "string",
             "default": "on",
+			"range": ["on", "off"],
             "required": "no"
         } ,
 		{
@@ -287,6 +290,8 @@
             "description": "Sets the delay in microseconds between transaction commit and flushing WAL to disk.",
             "type": "integer",
             "default": 0,
+			"min": 0,
+			"max": 100000,
             "required": "no"
         } ,
 		{
@@ -295,6 +300,8 @@
             "description": "Sets the minimum concurrent open transactions before performing commit_delay.",
             "type": "integer",
             "default": 5,
+			"min": 0,
+			"max": 1000,
             "required": "no"
         } ,
 		{
@@ -303,6 +310,7 @@
             "description": "Enables the planner's use of bitmap-scan plans.",
             "type": "string",
             "default": "on",
+			"range": ["on", "off"],
             "required": "no"
         } ,
 		{
@@ -311,6 +319,7 @@
             "description": "Enables the planner's use of sequential-scan plans.",
             "type": "string",
             "default": "on",
+			"range": ["on", "off"],
             "required": "no"
         } ,
 		{
@@ -319,6 +328,7 @@
             "description": "Writes full pages to WAL when first modified after a checkpoint.",
             "type": "string",
             "default": "on",
+			"range": ["on", "off"],
             "required": "no"
         } ,
 		{
@@ -327,14 +337,17 @@
             "description": "Sets the message levels that are logged.",
             "type": "string",
             "default": "warning",
+			"range": ["info", "notice","warning", "error", "log", "fatal", "panic",  "debug5", "debug4", "debug3", "debug2", "debug1"],
             "required": "no"
         } ,
 		{
             "key": "deadlock_timeout",
             "label": "deadlock_timeout",
             "description": "Sets the time to wait on a lock before checking for deadlock.",
-            "type": "string",
-            "default": "1s",
+            "type": "integer",
+            "default": 1,
+			"min": 0,
+			"max": 1000,
             "required": "no"
         } ,
 		{
@@ -343,6 +356,7 @@
             "description": "Logs long lock waits.",
             "type": "string",
             "default": "off",
+			"range": ["on", "off"],
             "required": "no"
         } ,
 		{
@@ -351,6 +365,8 @@
             "description": "Sets the minimum execution time above which statements will be logged.",
             "type": "integer",
             "default": -1,
+			"min": -1,
+			"max": 1000000,
             "required": "no"
         } ,
 		{
@@ -365,16 +381,20 @@
             "key": "max_prepared_transactions",
             "label": "max_prepared_transactions",
             "description": "Sets the maximum number of simultaneously prepared transactions.",
-            "type": "integer",
-            "default": 0,
+			"type": "integer",
+			"default": 0,
+			"min": 0,
+			"max": 65536,
             "required": "no"
         } ,
 		{
             "key": "max_wal_senders",
             "label": "max_wal_senders",
             "description": "Sets the maximum number of simultaneously running WAL sender processes.",
-            "type": "integer",
-            "default": 10,
+            "type": "integer", 
+			"default": 10,
+			"min": 0,
+			"max": 20,
             "required": "no"
         } ,
 		{
@@ -383,11 +403,22 @@
             "description": "Background writer maximum number of LRU pages to flush per round.",
             "type": "integer",
             "default": 100,
+			"min": 0,
+			"max": 1000,
             "required": "no"
-        }  
-		
+        },
+		{
+			"key": "log_statement",
+			"label": "log_statement",
+			"description": "Sets the type of statements logged.",
+			"type": "string",
+			"default": "none",
+			"range": ["none", "ddl", "mod", "all"],
+			"required": "no"
+		}
+
 		]
     }
-	
+
 	]
 }

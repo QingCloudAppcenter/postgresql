@@ -9,7 +9,7 @@
             "type": "string",
             "label": "App Name",
             "description": "The name of the application",
-            "default": "PG Simple Cluster",
+            "default": "PostgreSQL on QingCloud",
             "required": "no"
         }, {
             "key": "description",
@@ -130,7 +130,8 @@
             "description": "DB name to create",
             "type": "string",
             "default": "qingcloud",
-            "required": "yes"
+            "required": "yes",
+            "changeable": false
 			},
 			{
 				"key": "DBusername",
@@ -138,7 +139,8 @@
 				"description": "DB username to create",
 				"type": "string",
 				"default": "qingcloud",
-				"required": "yes"
+				"required": "yes",
+				"changeable": false
 			},
 			{
 				"key": "DBpassword",
@@ -146,30 +148,25 @@
 				"description": "DB password to create",
 				"type": "password",
 				"default": "qingcloud1234",
-				"required": "yes"
+				"required": "yes",
+				"changeable": false
 			},
 			{
 				"key": "max_connections",
 				"label": "max_connections",
 				"description": "Sets the maximum number of concurrent connections.",
 				"type": "integer",
-				"default": 1000,
+				"default": 256,
+				"min": 0,
+				"max": 65536, 
 				"required": "yes"
 			},
-			{
-				"key": "shared_buffers",
-				"label": "shared_buffers",
-				"description": "Sets the number of shared memory buffers used by the server.",
-				"type": "string",
-				"default": "1GB",
-				"required": "yes"
-			} ,
 			{
 				"key": "wal_buffers",
 				"label": "wal_buffers",
 				"description": "Sets the number of disk-page buffers in shared memory for WAL.",
 				"type": "string",
-				"default": "8MB",
+				"default": "8MB", 
 				"required": "yes"
 			} ,
 			{
@@ -177,15 +174,15 @@
 				"label": "work_mem",
 				"description": "Sets the maximum memory to be used for query workspaces.",
 				"type": "string",
-				"default": "4MB",
+				"default": "4MB", 
 				"required": "yes"
 			} ,
 			{
 				"key": "maintenance_work_mem",
 				"label": "maintenance_work_mem",
-				"description": "Sets the maximum number of concurrent connections.",
+				"description": "Sets the maximum memory to be used for maintenance operations.",
 				"type": "string",
-				"default": "64MB",
+				"default": "64MB", 
 				"required": "yes"
 			} ,
 			{
@@ -202,6 +199,8 @@
 				"description": "Sets the number of WAL files held for standby servers.",
 				"type": "integer",
 				"default": 256,
+				"min": 0,
+				"max": 1024,
 				"required": "yes"
 			} ,
 			{
@@ -211,14 +210,15 @@
 				"type": "string",
 				"default": "5min",
 				"required": "no"
-			} , 
-			
+			} ,
+
 			{
 				"key": "autovacuum",
 				"label": "autovacuum",
 				"description": "Starts the autovacuum subprocess.",
 				"type": "string",
 				"default": "on",
+				"range": ["on", "off"],
 				"required": "no"
 			} ,
 			{
@@ -227,6 +227,8 @@
 				"description": "Vacuum cost delay in milliseconds.",
 				"type": "integer",
 				"default": 0,
+				"min": 0,
+				"max": 100,
 				"required": "no"
 			} ,
 			{
@@ -242,6 +244,8 @@
 				"label": "vacuum_cost_limit",
 				"description": "Vacuum cost amount available before napping.",
 				"type": "integer",
+				"min": 0,
+				"max": 10000,                
 				"default": 200,
 				"required": "no"
 			} ,
@@ -249,32 +253,30 @@
 				"key": "bgwriter_delay",
 				"label": "bgwriter_delay",
 				"description": "Background writer sleep time between rounds.",
-				"type": "string",
-				"default": "200ms",
+				"type": "integer",
+				"min": 10,
+				"max": 10000, 
+				"default": 200,
 				"required": "no"
 			} ,
 			{
 				"key": "bgwriter_lru_multiplier",
 				"label": "bgwriter_lru_multiplier",
 				"description": "Multiple of the average buffer usage to free per round.",
-				"type": "integer",
-				"default": 2,
-				"required": "no"
-			} ,
-			{
-				"key": "wal_level",
-				"label": "wal_level",
-				"description": "Set the level of information written to the WAL.",
-				"type": "string",
-				"default": "hot_standby",
+				"type": "number",
+				"min": 0,
+				"max": 10.0, 
+				"default": 2.0,
 				"required": "no"
 			} ,
 			{
 				"key": "wal_writer_delay",
 				"label": "wal_writer_delay",
 				"description": "Time between WAL flushes performed in the WAL writer.",
-				"type": "string",
-				"default": "200ms",
+				"type": "integer",
+				"min": 1,
+				"max": 10000,
+				"default": 200,
 				"required": "no"
 			} ,
 			{
@@ -283,6 +285,7 @@
 				"description": "Forces synchronization of updates to disk.",
 				"type": "string",
 				"default": "on",
+				"range": ["on", "off"],
 				"required": "no"
 			} ,
 			{
@@ -290,6 +293,8 @@
 				"label": "commit_delay",
 				"description": "Sets the delay in microseconds between transaction commit and flushing WAL to disk.",
 				"type": "integer",
+				"min": 0,
+				"max": 100000,
 				"default": 0,
 				"required": "no"
 			} ,
@@ -299,6 +304,8 @@
 				"description": "Sets the minimum concurrent open transactions before performing commit_delay.",
 				"type": "integer",
 				"default": 5,
+				"min": 0,
+				"max": 1000,
 				"required": "no"
 			} ,
 			{
@@ -307,6 +314,7 @@
 				"description": "Enables the planner's use of bitmap-scan plans.",
 				"type": "string",
 				"default": "on",
+				"range": ["on", "off"],
 				"required": "no"
 			} ,
 			{
@@ -315,6 +323,7 @@
 				"description": "Enables the planner's use of sequential-scan plans.",
 				"type": "string",
 				"default": "on",
+				"range": ["on", "off"],
 				"required": "no"
 			} ,
 			{
@@ -323,6 +332,7 @@
 				"description": "Writes full pages to WAL when first modified after a checkpoint.",
 				"type": "string",
 				"default": "on",
+				"range": ["on", "off"],
 				"required": "no"
 			} ,
 			{
@@ -331,14 +341,17 @@
 				"description": "Sets the message levels that are logged.",
 				"type": "string",
 				"default": "warning",
+				"range": ["info", "notice","warning", "error", "log", "fatal", "panic",  "debug5", "debug4", "debug3", "debug2", "debug1"],
 				"required": "no"
 			} ,
 			{
 				"key": "deadlock_timeout",
 				"label": "deadlock_timeout",
 				"description": "Sets the time to wait on a lock before checking for deadlock.",
-				"type": "string",
-				"default": "1s",
+				"type": "integer",
+				"default": 1,
+				"min": 0,
+				"max": 1000,
 				"required": "no"
 			} ,
 			{
@@ -347,6 +360,7 @@
 				"description": "Logs long lock waits.",
 				"type": "string",
 				"default": "off",
+				"range": ["on", "off"],
 				"required": "no"
 			} ,
 			{
@@ -355,13 +369,16 @@
 				"description": "Sets the minimum execution time above which statements will be logged.",
 				"type": "integer",
 				"default": -1,
+				"min": -1,
+				"max": 1000000,
 				"required": "no"
 			} ,
 			{
 				"key": "temp_buffers",
 				"label": "temp_buffers",
 				"description": "Sets the maximum number of temporary buffers used by each session.",
-				"type": "string",
+				"type": "integer",
+				 "type": "string",
 				"default": "8MB",
 				"required": "no"
 			}  ,
@@ -371,6 +388,8 @@
 				"description": "Sets the maximum number of simultaneously prepared transactions.",
 				"type": "integer",
 				"default": 0,
+				"min": 0,
+				"max": 65536,
 				"required": "no"
 			} ,
 			{
@@ -378,7 +397,9 @@
 				"label": "max_wal_senders",
 				"description": "Sets the maximum number of simultaneously running WAL sender processes.",
 				"type": "integer",
-				"default": 100,
+				"default": 10,
+				"min": 0,
+				"max": 20,
 				"required": "no"
 			} ,
 			{
@@ -387,23 +408,26 @@
 				"description": "Background writer maximum number of LRU pages to flush per round.",
 				"type": "integer",
 				"default": 100,
+				"min": 0,
+				"max": 1000,
 				"required": "no"
 			},
 			{
-				"key": "synchronous_standby_names",
-				"label": "synchronous_standby_names",
-				"description": "Number of synchronous standbys and list of names of potential synchronous ones.",
+				"key": "log_statement",
+				"label": "log_statement",
+				"description": "Sets the type of statements logged.",
 				"type": "string",
-				"default": "",
+				"default": "none",
+				"range": ["none", "ddl", "mod", "all"],
 				"required": "no"
-			} ,
+			},
 			{
-				"key": "synchronous_commit",
-				"label": "synchronous_commit",
-				"description": "Sets the current transaction's synchronization level.",
+				"key": "SyncStreamRepl",
+				"label": "SyncStreamRepl",
+				"description": "Sets the Stream Relication's synchronization level.",
 				"type": "string",
-				"default": "on",
-				"range": ["on", "remote_apply", "remote_write", "local", "off"],
+				"default": "No",
+				"range": ["Yes", "No"],
 				"required": "no"
 			}
 			]
