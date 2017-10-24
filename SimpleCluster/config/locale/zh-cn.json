@@ -1,4 +1,6 @@
 {
+	"PG Node": "数据库节点",
+	"PG Client": "客户端节点",
 	"cluster properties": "集群属性",
     "App Name": "应用名称",
 	"The name of the application": "应用名称",
@@ -25,7 +27,10 @@
 	"Count":"节点数量",
 	"Number of nodes for the cluster to create":"集群所建立的节点数量",
 
-	"volume_size":"磁盘大小",
+	"Volume Class":"磁盘类别",
+	"The volume type for each instance，such as high performance，high performance plus，high capacity":"每个实例的磁盘类型，比如性能型与超高性能型。",
+
+	"Volume Size":"磁盘大小",
 	"The volume size for each instance":"每个实例的磁盘大小",
 
 	"isMasterGrp":"是否为Master",
@@ -102,5 +107,6 @@
 	"Sets the type of statements logged.":"控制哪些 SQL 语句被记录。有效值是 none (off)、ddl、mod和 all（所有语句）。",
 	"SyncStreamRepl":"是否同步流复制", 
 	"Sets the Stream Relication's synchronization level.":"设置流复制是同步还是异步方式。",
-	"RebuildStandby":"重建从节点"
+	"RebuildStandby":"重建从节点",
+	"node_details":"角色详情"
 }

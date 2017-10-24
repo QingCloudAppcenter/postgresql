@@ -70,7 +70,7 @@
                 "description": "The volume type for each instance，such as high performance，high performance plus，high capacity",
                 "type": "integer",
                 "default": 3,
-                "range": [0, 2, 3],
+                "range": [3],
                 "required": "yes"
             },{
                 "key": "volume_size",
@@ -159,7 +159,7 @@
 				"default": 256,
 				"min": 0,
 				"max": 65536, 
-				"required": "yes"
+				"required": "no"
 			},
 			{
 				"key": "wal_buffers",
@@ -167,7 +167,7 @@
 				"description": "Sets the number of disk-page buffers in shared memory for WAL.",
 				"type": "string",
 				"default": "8MB", 
-				"required": "yes"
+				"required": "no"
 			} ,
 			{
 				"key": "work_mem",
@@ -175,7 +175,7 @@
 				"description": "Sets the maximum memory to be used for query workspaces.",
 				"type": "string",
 				"default": "4MB", 
-				"required": "yes"
+				"required": "no"
 			} ,
 			{
 				"key": "maintenance_work_mem",
@@ -183,7 +183,7 @@
 				"description": "Sets the maximum memory to be used for maintenance operations.",
 				"type": "string",
 				"default": "64MB", 
-				"required": "yes"
+				"required": "no"
 			} ,
 			{
 				"key": "effective_cache_size",
@@ -191,7 +191,7 @@
 				"description": "Sets the planner's assumption about the size of the disk cache.",
 				"type": "string",
 				"default": "4GB",
-				"required": "yes"
+				"required": "no"
 			} ,
 			{
 				"key": "wal_keep_segments",
@@ -201,7 +201,7 @@
 				"default": 256,
 				"min": 0,
 				"max": 1024,
-				"required": "yes"
+				"required": "no"
 			} ,
 			{
 				"key": "checkpoint_timeout",

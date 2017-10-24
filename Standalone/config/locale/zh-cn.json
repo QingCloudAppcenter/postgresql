@@ -1,4 +1,6 @@
 {
+	"PG Standalone": "数据库节点",
+    "PG Client": "客户端节点",
 	"cluster properties": "集群属性",
     "App Name": "应用名称",
 	"The name of the application": "应用名称",

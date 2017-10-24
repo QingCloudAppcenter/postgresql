@@ -7,7 +7,7 @@
 		"role": "pg",
         "container": {
             "type": "lxc",
-            "image": "img-lha07zfn",
+            "image": "img-dhp8w3jy",
             "zone": "sh1a"
         },
         "cpu": {{cluster.pg.cpu}},
@@ -102,7 +102,7 @@
 	"role": "pg_client",
     "container": {
             "type": "kvm",
-            "image": "img-hjtol5hl",
+            "image": "img-yr6f7c03",
             "zone": "sh1a"
         },
     "cpu": {{cluster.pg_client.cpu}},
@@ -111,6 +111,13 @@
 		"user_access": true,
 	    "advanced_actions": ["scale_horizontal"] 
     }],
+	"display_tabs": {
+        "node_details": {
+            "cmd": "/usr/lib/postgresql/9.6/bin/scripts/pgnodedetails.sh",
+            "timeout": 10,
+            "description": ""
+        }
+    },
 	"env": {
 		  "DBname": {{env.DBname}},
 		  "DBusername": {{env.DBusername}},
