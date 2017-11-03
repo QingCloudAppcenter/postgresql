@@ -2,11 +2,15 @@
     "name": {{cluster.name}},
     "description": {{cluster.description}},
     "vxnet": {{cluster.vxnet}},
+	"backup_policy": "device",
+	"upgrade_policy": [
+            "appv-xxxxxxxx" 
+    ],
     "nodes": [{
 		"role": "pg_standalone",
         "container": {
             "type": "lxc",
-            "image": "img-gbcyh8un",
+            "image": "img-ti6b51go",
             "zone": "sh1a"
         },
         "cpu": {{cluster.pg_standalone.cpu}},
@@ -21,12 +25,10 @@
             "class": {{cluster.pg_standalone.volume_class}}
         },
         "services": {
-			"init": {
-			    "order": 1,
+			"init": { 
                 "cmd": "/usr/lib/postgresql/9.6/bin/scripts/pginit.sh"
             },
-			"start": {
-				"order": 1,
+			"start": { 
                 "cmd": "/usr/lib/postgresql/9.6/bin/scripts/pgstart.sh"
             },
 			"restart": {
@@ -34,6 +36,10 @@
                  },
             "stop": {
                 "cmd": "service postgresql stop  -m fast"
+            },
+			 "backup": {
+                "cmd": "echo `date '+%Y-%m-%d %H:%M:%S'`:backup>>/data/pgsql/main/pg_log/pgscripts.log", 
+                "timeout": 86400
             }
         },
 		"env": {
@@ -73,7 +79,7 @@
 		"health_check": {
             "enable": true,
             "interval_sec": 60,
-            "timeout_sec": 10,
+            "timeout_sec": 60,
             "action_timeout_sec": 30,
             "healthy_threshold": 2,
             "unhealthy_threshold": 2,
@@ -118,19 +124,6 @@
 		"display": ["connCntGrp","commitCntGrp","waiteventCntGrp","deadlocksCntGrp"],
 		"alarm": ["connCnt", "deadlocksCnt"]
      }
-    },
-	{
-		"role": "pg_client",
-        "container": {
-            "type": "kvm",
-            "image": "img-yr6f7c03",
-            "zone": "sh1a"
-        },
-        "cpu": {{cluster.pg_client.cpu}},
-        "memory": {{cluster.pg_client.memory}},
-		"count": {{cluster.pg_client.count}},
-		"user_access": true,
-		"advanced_actions": ["scale_horizontal"] 
     }
 	]
 }

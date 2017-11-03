@@ -7,7 +7,7 @@
 		"role": "pg",
         "container": {
             "type": "lxc",
-            "image": "img-dhp8w3jy",
+            "image": "img-uxt3oxn6",
             "zone": "sh1a"
         },
         "cpu": {{cluster.pg.cpu}},
@@ -22,18 +22,15 @@
             "class": {{cluster.pg.volume_class}}
         },
         "services": {
-			"init": {
-				"order": 1,
-				"timeout": 300,
+			"init": {  
                 "cmd": "/usr/lib/postgresql/9.6/bin/scripts/pginit.sh"
             },
-			"start": {
-				"order": 1,
+			"start": { 
                 "cmd": "/usr/lib/postgresql/9.6/bin/scripts/pgstart.sh"
             },
 			"restart": {
-                "cmd": "/usr/lib/postgresql/9.6/bin/scripts/pgstop.sh;/usr/lib/postgresql/9.6/bin/scripts/pgstart.sh"
-                 },
+                "cmd": "/usr/lib/postgresql/9.6/bin/scripts/pgrestart.sh"
+            },
             "stop": {
                 "cmd": "/usr/lib/postgresql/9.6/bin/scripts/pgstop.sh"
             } ,
@@ -41,15 +38,19 @@
                 "type": "custom",
                 "cmd": "/usr/lib/postgresql/9.6/bin/scripts/pgrebuildstandby.sh",
                 "timeout": 86400 
-			}
+			},
+			 "backup": {
+                "cmd": "echo `date '+%Y-%m-%d %H:%M:%S'`:backup>>/data/pgsql/main/pg_log/pgscripts.log", 
+                "timeout": 86400
+            }
         },
 		"health_check": {
             "enable": true,
             "interval_sec": 60,
             "timeout_sec": 30,
             "action_timeout_sec": 60,
-            "healthy_threshold": 3,
-            "unhealthy_threshold": 3,
+            "healthy_threshold": 2,
+            "unhealthy_threshold": 2,
             "check_cmd": "/usr/lib/postgresql/9.6/bin/scripts/pghealthcheck.sh",
             "action_cmd": "/usr/lib/postgresql/9.6/bin/scripts/pghealthcheckaction.sh"
         },
@@ -97,19 +98,6 @@
 		"display": ["isMasterGrp","connCntGrp","commitCntGrp","waiteventCntGrp","deadlocksCntGrp"],
 		"alarm": ["connCnt", "deadlocksCnt"]
      }
-    },
-	{
-	"role": "pg_client",
-    "container": {
-            "type": "kvm",
-            "image": "img-yr6f7c03",
-            "zone": "sh1a"
-        },
-    "cpu": {{cluster.pg_client.cpu}},
-    "memory": {{cluster.pg_client.memory}},
-		"count": {{cluster.pg_client.count}},
-		"user_access": true,
-	    "advanced_actions": ["scale_horizontal"] 
     }],
 	"display_tabs": {
         "node_details": {

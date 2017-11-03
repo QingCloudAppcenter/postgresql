@@ -107,6 +107,6 @@
 	"Sets the type of statements logged.":"控制哪些 SQL 语句被记录。有效值是 none (off)、ddl、mod和 all（所有语句）。",
 	"SyncStreamRepl":"是否同步流复制", 
 	"Sets the Stream Relication's synchronization level.":"设置流复制是同步还是异步方式。",
-	"RebuildStandby":"重建从节点",
+	"RebuildStandby":"重建从库",
 	"node_details":"角色详情"
 }
