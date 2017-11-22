@@ -2,15 +2,12 @@
     "name": {{cluster.name}},
     "description": {{cluster.description}},
     "vxnet": {{cluster.vxnet}},
-	"backup_policy": "device",
-	"upgrade_policy": [
-            "appv-xxxxxxxx" 
-    ],
+	"backup_policy": "device",	 
     "nodes": [{
 		"role": "pg_standalone",
         "container": {
             "type": "lxc",
-            "image": "img-ti6b51go",
+            "image": "img-ofp0f1m6",
             "zone": "sh1a"
         },
         "cpu": {{cluster.pg_standalone.cpu}},
@@ -22,7 +19,7 @@
             "mount_point": "/data",
             "mount_options": "defaults,noatime",
             "filesystem": "ext4",
-            "class": {{cluster.pg_standalone.volume_class}}
+            "class": {{cluster.pg_standalone.volume_class}} 
         },
         "services": {
 			"init": { 
@@ -32,13 +29,13 @@
                 "cmd": "/usr/lib/postgresql/9.6/bin/scripts/pgstart.sh"
             },
 			"restart": {
-                "cmd": "service postgresql restart"
+                "cmd": "echo `date '+%Y-%m-%d %H:%M:%S'`:Restart by Appcenter interface!Start>>/data/pgsql/main/pg_log/pgscripts.log;service postgresql restart;echo `date '+%Y-%m-%d %H:%M:%S'`:Restart by Appcenter interface!End>>/data/pgsql/main/pg_log/pgscripts.log"
                  },
             "stop": {
                 "cmd": "service postgresql stop  -m fast"
             },
 			 "backup": {
-                "cmd": "echo `date '+%Y-%m-%d %H:%M:%S'`:backup>>/data/pgsql/main/pg_log/pgscripts.log", 
+                "cmd": "echo `date '+%Y-%m-%d %H:%M:%S'`:Backup by Appcenter interface!>>/data/pgsql/main/pg_log/pgscripts.log", 
                 "timeout": 86400
             }
         },

@@ -9,7 +9,7 @@
             "type": "string",
             "label": "App Name",
             "description": "The name of the application",
-            "default": "PostgreSQL",
+            "default": "PostgreSQL9.6 Cluster",
             "required": "no"
         }, {
             "key": "description",
@@ -70,7 +70,7 @@
                 "description": "The volume type for each instance，such as high performance，high performance plus，high capacity",
                 "type": "integer",
                 "default": 3,
-                "range": [3],
+                "range": [0,3],
                 "required": "yes"
             },{
                 "key": "volume_size",

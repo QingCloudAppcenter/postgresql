@@ -7,7 +7,7 @@
 		"role": "pg",
         "container": {
             "type": "lxc",
-            "image": "img-uxt3oxn6",
+            "image": "img-0zkud626",
             "zone": "sh1a"
         },
         "cpu": {{cluster.pg.cpu}},
@@ -19,7 +19,7 @@
             "mount_point": "/data",
             "mount_options": "defaults,noatime",
             "filesystem": "ext4",
-            "class": {{cluster.pg.volume_class}}
+            "class": {{cluster.pg.volume_class}} 
         },
         "services": {
 			"init": {  
@@ -40,7 +40,7 @@
                 "timeout": 86400 
 			},
 			 "backup": {
-                "cmd": "echo `date '+%Y-%m-%d %H:%M:%S'`:backup>>/data/pgsql/main/pg_log/pgscripts.log", 
+                "cmd": "echo `date '+%Y-%m-%d %H:%M:%S'`':Info: Backup by Appcenter interface!'  >>/data/pgsql/main/pg_log/pgscripts.log", 
                 "timeout": 86400
             }
         },
@@ -57,12 +57,7 @@
 		"monitor": {
         "enable": true,
         "cmd": "/usr/lib/postgresql/9.6/bin/scripts/pgmonitor.py",
-        "items": {
-			"isMaster": {
-                "unit": "",
-                "value_type": "int",
-                "statistics_type": "latest"
-            },
+        "items": {			
             "connCnt": {
                 "unit": "",
                 "value_type": "int",
@@ -88,14 +83,13 @@
                 "scale_factor_when_display": 1
             }
         },
-		"groups": {
-			"isMasterGrp": ["isMaster"],
+		"groups": { 
 			"connCntGrp": ["connCnt"],
 			"commitCntGrp": ["commitCnt"],
 			"waiteventCntGrp": ["waiteventCnt"],
 			"deadlocksCntGrp": ["deadlocksCnt"]
 		},
-		"display": ["isMasterGrp","connCntGrp","commitCntGrp","waiteventCntGrp","deadlocksCntGrp"],
+		"display": ["connCntGrp","commitCntGrp","waiteventCntGrp","deadlocksCntGrp"],
 		"alarm": ["connCnt", "deadlocksCnt"]
      }
     }],
