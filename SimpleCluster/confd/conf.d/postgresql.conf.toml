@@ -1,0 +1,5 @@
+[template]
+src = "postgresql.conf.tmpl"
+dest = "/etc/postgresql/9.6/main/postgresql.conf" 
+keys = ["/",]
+reload_cmd = "/usr/lib/postgresql/9.6/bin/scripts/pgapplyparams.sh"

@@ -1,0 +1,5 @@
+[template]
+src = "pgstart.sh.tmpl"
+dest = "/usr/lib/postgresql/9.6/bin/scripts/pgstart.sh"
+keys = ["/",]
+

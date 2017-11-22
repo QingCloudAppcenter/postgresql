@@ -1,0 +1,5 @@
+[template]
+src = "keepalived.conf.tmpl"
+dest = "/etc/keepalived/keepalived.conf"
+keys = ["/",] 
+reload_cmd = "/usr/lib/postgresql/9.6/bin/scripts/keepalivedapplyparams.sh"

@@ -1,0 +1,28 @@
+{{ $replicaIPs := split (getv "/cluster/endpoints/reserved_ips/vip/value") "." }} 
+global_defs {
+        router_id PostgreSQL-HA2
+}
+
+vrrp_script check_pg {
+        script "/usr/lib/postgresql/9.6/bin/scripts/pgcheckByKeepalived.sh"
+        interval 15
+    }
+
+vrrp_instance PostgreSQL-HA{
+    state BACKUP
+    interface eth0
+    virtual_router_id {{index $replicaIPs 3}} 
+    priority 1
+    advert_int 15
+    nopreempt
+    unicast_src_ip {{getv "/host/ip"}}
+    authentication {
+        auth_type PASS
+        auth_pass pwd
+    } 
+   
+    track_script {
+        check_pg
+    }
+ 
+} 

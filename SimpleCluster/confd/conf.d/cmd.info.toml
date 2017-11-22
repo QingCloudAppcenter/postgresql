@@ -1,0 +1,7 @@
+[template]
+src = "cmd.info.tmpl"
+dest = "/opt/qingcloud/app-agent/log/cmd.info"
+  keys = [
+    "/",
+]
+reload_cmd = "/opt/qingcloud/app-agent/bin/exec.sh"

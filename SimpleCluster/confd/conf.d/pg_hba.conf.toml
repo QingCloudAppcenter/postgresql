@@ -1,0 +1,5 @@
+[template]
+src = "pg_hba.conf.tmpl"
+dest = "/etc/postgresql/9.6/main/pg_hba.conf"
+keys = ["/",]
+reload_cmd = "/usr/lib/postgresql/9.6/bin/scripts/pgapplyparams4pghba.sh"
