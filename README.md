@@ -1,2 +1,1 @@
-# postgresql
-postgresql standalone and postgresql cluster 
+[PostgreSQL on QingCloud](https://appcenter.qingcloud.com/apps/app-gtusp816) 
